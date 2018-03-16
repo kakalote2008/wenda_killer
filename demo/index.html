@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    /* Style the tab */
+
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+    }
+
+    /* Change background color of buttons on hover */
+
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    /* Style the tab content */
+
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+
+    .tabcontent {
+      animation: fadeEffect 1s;
+      /* Fading effect takes 1 second */
+    }
+
+    /* Go from zero to full opacity */
+
+    @keyframes fadeEffect {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tab">
+    <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'xigua_tab')">西瓜视频</button>
+    <button class="tablinks" onclick="openTab(event, 'huajiao_tab')">花椒直播</button>
+    <button class="tablinks" onclick="openTab(event, 'cddh_tab')">冲顶大会</button>
+    <button class="tablinks" onclick="openTab(event, 'zscr_tab')">芝士超人</button>
+  </div>
+
+  <!-- Tab content -->
+  <div id="xigua_tab" class="tabcontent">
+    <ul id=xigua>
+    </ul>
+  </div>
+
+  <div id="huajiao_tab" class="tabcontent">
+    <ul id=huajiao>
+    </ul>
+  </div>
+
+  <div id="cddh_tab" class="tabcontent">
+    <ul id=cddh>
+    </ul>
+  </div>
+
+  <div id="zscr_tab" class="tabcontent">
+    <ul id=zscr>
+    </ul>
+  </div>
+
+
+  <script src=/eventsource-polyfill.js></script>
+
+  <script>
+    document.getElementById("defaultOpen").click();
+    function subscribe(es) {
+      es.addEventListener('xigua', function (e) {
+        var li = document.createElement("LI");
+        li.appendChild(document.createTextNode(e.data));
+        document.getElementById("xigua").appendChild(li);
+      });
+      es.addEventListener('huajiao', function (e) {
+        var li = document.createElement("LI");
+        li.appendChild(document.createTextNode(e.data));
+        document.getElementById("huajiao").appendChild(li);
+      });
+      es.addEventListener('cddh', function (e) {
+        var li = document.createElement("LI");
+        li.appendChild(document.createTextNode(e.data));
+        document.getElementById("cddh").appendChild(li);
+      });
+      es.addEventListener('zscr', function (e) {
+        var li = document.createElement("LI");
+        li.appendChild(document.createTextNode(e.data));
+        document.getElementById("zscr").appendChild(li);
+      });
+    }
+    subscribe(new EventSource('/sse'));
+    // subscribe(new EventSourcePolyfill('/sse'));
+
+    function openTab(evt, tabName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+</body>
+
+</html>
